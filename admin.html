@@ -3,444 +3,898 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <title>Admin Database | Your Babalawo</title>
-  <meta name="robots" content="noindex, nofollow" />
-  <meta name="description" content="Private YourBabalawo.com admin page for reviewing Koleoso intake submissions and interaction records." />
+  <title>Client Intake Spreadsheet | Your Babalawo</title>
+  <meta name="robots" content="noindex, nofollow, noarchive" />
+  <meta name="description" content="Private spreadsheet-style admin page for YourBabalawo.com intake submissions." />
 
   <style>
-:root {
-  --bg: #060403;
-  --bg2: #100b08;
-  --panel: rgba(255, 255, 255, 0.07);
-  --panel2: rgba(212, 175, 55, 0.09);
-  --card: rgba(20, 16, 13, 0.92);
-  --gold: #d4af37;
-  --gold2: #f4df95;
-  --purple: #3a174d;
-  --purple2: #6f42c1;
-  --brown: #6b3f18;
-  --cream: #fff4cc;
-  --text: #f8efd4;
-  --muted: #cdbf91;
-  --green: #12351e;
-  --red: #6d1717;
-  --line: rgba(255, 255, 255, 0.13);
-  --shadow: 0 24px 70px rgba(0, 0, 0, 0.62);
-  --radius: 24px;
-  --max: 1180px;
-}
-* { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
-body {
-  margin: 0;
-  font-family: Georgia, "Times New Roman", serif;
-  color: var(--text);
-  background:
-    radial-gradient(circle at 15% 8%, rgba(212, 175, 55, 0.18), transparent 32%),
-    radial-gradient(circle at 88% 12%, rgba(111, 66, 193, 0.22), transparent 30%),
-    radial-gradient(circle at 50% 100%, rgba(18, 53, 30, 0.32), transparent 44%),
-    linear-gradient(180deg, #050302 0%, #100805 42%, #050302 100%);
-  line-height: 1.65;
-}
-a { color: var(--gold2); text-decoration: none; }
-a:hover { text-decoration: underline; }
-.wrap { width: min(var(--max), calc(100% - 32px)); margin: 0 auto; }
-.topbar {
-  position: sticky; top: 0; z-index: 20;
-  backdrop-filter: blur(18px);
-  background: rgba(5, 3, 2, 0.80);
-  border-bottom: 1px solid var(--line);
-}
-.nav {
-  min-height: 76px;
-  display: flex; align-items: center; justify-content: space-between; gap: 18px;
-}
-.brand {
-  display: flex; align-items: center; gap: 14px;
-  color: var(--cream); font-weight: 800; letter-spacing: 0.04em;
-}
-.brand-logo {
-  width: 54px; height: 54px; border-radius: 50%;
-  border: 2px solid rgba(212, 175, 55, 0.8);
-  background:
-    radial-gradient(circle, rgba(244, 223, 149, 0.96), rgba(212, 175, 55, 0.28) 55%, rgba(58, 23, 77, 0.25));
-  display: grid; place-items: center;
-  box-shadow: 0 0 30px rgba(212, 175, 55, 0.3);
-  overflow: hidden;
-}
-.brand-logo img { width: 100%; height: 100%; object-fit: cover; }
-.brand-mark { color: #170e05; font-weight: 900; font-size: 0.95rem; letter-spacing: 0.02em; }
-.brand small {
-  display: block; color: var(--muted); font-size: 0.72rem;
-  letter-spacing: 0.12em; text-transform: uppercase; margin-top: -2px;
-}
-.navlinks { display: flex; align-items: center; gap: 18px; font-size: 0.93rem; }
-.navlinks a { color: var(--cream); opacity: 0.88; }
-.navlinks a:hover { opacity: 1; color: var(--gold2); }
-.btn, button.btn {
-  display: inline-flex; align-items: center; justify-content: center; gap: 9px;
-  border: 1px solid rgba(212, 175, 55, 0.7);
-  background: linear-gradient(135deg, rgba(212, 175, 55, 0.95), rgba(244, 223, 149, 0.9));
-  color: #120b04; padding: 13px 19px; border-radius: 999px;
-  font-weight: 800; box-shadow: 0 14px 34px rgba(0, 0, 0, 0.38);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  text-decoration: none; white-space: nowrap; cursor: pointer;
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: 1rem;
-}
-.btn:hover, button.btn:hover {
-  transform: translateY(-2px); box-shadow: 0 18px 44px rgba(0, 0, 0, 0.46); text-decoration: none;
-}
-.btn.secondary {
-  background: rgba(255, 255, 255, 0.06); color: var(--cream); border-color: rgba(255, 255, 255, 0.2);
-}
-.btn.secondary:hover { border-color: rgba(212, 175, 55, 0.8); }
-.hero { position: relative; padding: 70px 0 34px; overflow: hidden; }
-.eyebrow {
-  display: inline-flex; align-items: center; gap: 10px; color: var(--gold2);
-  border: 1px solid rgba(212, 175, 55, 0.35);
-  background: rgba(212, 175, 55, 0.08); padding: 8px 13px; border-radius: 999px;
-  font-size: 0.82rem; letter-spacing: 0.13em; text-transform: uppercase; margin-bottom: 18px;
-}
-.dot {
-  width: 8px; height: 8px; border-radius: 50%; background: var(--gold);
-  box-shadow: 0 0 16px var(--gold);
-}
-h1, h2, h3 { line-height: 1.1; margin: 0; }
-h1 {
-  font-size: clamp(2.45rem, 6vw, 5.5rem); letter-spacing: -0.055em;
-  color: var(--cream); text-shadow: 0 10px 44px rgba(0, 0, 0, 0.55);
-}
-h1 span {
-  display: block; color: var(--gold2); font-size: clamp(1.55rem, 3.6vw, 3.2rem);
-  letter-spacing: -0.025em; margin-top: 8px;
-}
-.subtitle {
-  max-width: 820px; color: var(--muted); font-size: clamp(1.05rem, 2.2vw, 1.28rem);
-  margin: 22px 0 22px;
-}
-section { padding: 50px 0; }
-.section-head { max-width: 900px; margin-bottom: 28px; }
-.section-head.center { text-align: center; margin-left: auto; margin-right: auto; }
-.kicker { color: var(--gold2); text-transform: uppercase; letter-spacing: 0.14em; font-size: 0.82rem; font-weight: 800; margin-bottom: 9px; }
-h2 { font-size: clamp(1.85rem, 4vw, 3.35rem); color: var(--cream); letter-spacing: -0.035em; }
-.lead { color: var(--muted); font-size: 1.08rem; margin-top: 15px; }
-.grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
-.grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
-.card {
-  background: linear-gradient(180deg, rgba(255,255,255,0.075), rgba(255,255,255,0.035)), rgba(13, 9, 7, 0.82);
-  border: 1px solid var(--line); border-radius: var(--radius); padding: 24px;
-  box-shadow: 0 14px 44px rgba(0, 0, 0, 0.35);
-}
-.card.gold {
-  border-color: rgba(212, 175, 55, 0.34);
-  background: linear-gradient(180deg, rgba(212,175,55,0.12), rgba(255,255,255,0.035)), rgba(13, 9, 7, 0.86);
-}
-.card.purple {
-  border-color: rgba(111, 66, 193, 0.45);
-  background: linear-gradient(180deg, rgba(111,66,193,0.18), rgba(255,255,255,0.035)), rgba(13, 9, 7, 0.86);
-}
-.card h3 { color: var(--gold2); font-size: 1.45rem; margin-bottom: 12px; }
-.card p { margin: 0; color: var(--muted); }
-.card ul { margin: 14px 0 0; padding-left: 20px; color: var(--muted); }
-.card li { margin: 7px 0; }
-.form-wrap {
-  border-radius: 34px; border: 1px solid rgba(212, 175, 55, 0.32);
-  background: radial-gradient(circle at 12% 10%, rgba(212,175,55,0.14), transparent 28%),
-              radial-gradient(circle at 90% 80%, rgba(111,66,193,0.16), transparent 28%),
-              rgba(10, 7, 6, 0.86);
-  box-shadow: var(--shadow);
-  padding: clamp(22px, 5vw, 44px);
-}
-fieldset { border: 1px solid rgba(255,255,255,0.12); border-radius: 22px; padding: 22px; margin: 0 0 20px; background: rgba(255,255,255,0.035); }
-legend { color: var(--gold2); font-weight: 900; padding: 0 10px; font-size: 1.1rem; }
-label { display: block; color: var(--cream); font-weight: 800; margin: 14px 0 7px; }
-label .hint { display: block; color: var(--muted); font-weight: 400; font-size: .92rem; margin-top: 2px; }
-input, select, textarea {
-  width: 100%; padding: 13px 14px; border-radius: 15px;
-  border: 1px solid rgba(255,255,255,0.18);
-  background: rgba(255,255,255,0.08); color: var(--cream);
-  font-family: Georgia, "Times New Roman", serif; font-size: 1rem;
-}
-input:focus, select:focus, textarea:focus { outline: 2px solid rgba(212,175,55,.5); border-color: rgba(212,175,55,.8); }
-textarea { min-height: 120px; resize: vertical; }
-select option { background: #140d09; color: var(--cream); }
-.row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-.checkrow { display: flex; gap: 12px; align-items: flex-start; color: var(--muted); margin: 12px 0; }
-.checkrow input { width: auto; margin-top: 6px; }
-.checkrow strong { color: var(--cream); }
-.actions { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-top: 22px; }
-.notice {
-  border-left: 4px solid var(--gold); background: rgba(212,175,55,.10);
-  border-radius: 16px; padding: 14px 16px; color: var(--cream); margin: 18px 0;
-}
-.notice p { margin: 0; color: var(--muted); }
-.status {
-  display:none; margin-top: 18px; border: 1px solid rgba(212,175,55,.38);
-  background: rgba(212,175,55,.10); padding: 18px; border-radius: 18px;
-}
-.status.show { display:block; }
-.step-list { counter-reset: step; display: grid; gap: 14px; }
-.step { position: relative; padding-left: 58px; }
-.step::before {
-  counter-increment: step; content: counter(step);
-  position: absolute; left: 18px; top: 20px; width: 30px; height: 30px; border-radius: 50%;
-  display: grid; place-items: center; background: var(--gold); color: #170e05; font-weight: 900;
-}
-.payment-tag {
-  display: inline-flex; border: 1px solid rgba(212,175,55,.45); border-radius: 999px;
-  padding: 8px 12px; color: #170e05; background: linear-gradient(135deg, var(--gold), var(--gold2)); font-weight: 900;
-}
-footer {
-  border-top: 1px solid var(--line); background: rgba(0,0,0,0.24);
-  padding: 30px 0; color: var(--muted); font-size: 0.92rem;
-}
-.footer-grid { display: flex; align-items: center; justify-content: space-between; gap: 18px; flex-wrap: wrap; }
-.fineprint {
-  margin-top: 18px; padding-top: 18px; border-top: 1px solid rgba(255,255,255,0.09);
-  color: rgba(248, 239, 212, 0.68); font-size: 0.84rem;
-}
-@media (max-width: 920px) {
-  .grid-2, .grid-3, .row { grid-template-columns: 1fr; }
-  .nav { align-items: flex-start; padding: 14px 0; }
-  .navlinks { display: none; }
-  .hero { padding-top: 48px; }
-}
-@media (max-width: 560px) {
-  .actions { flex-direction: column; align-items: stretch; }
-  .btn, button.btn { width: 100%; }
-  .brand { font-size: 0.95rem; }
-  fieldset { padding: 16px; }
-}
-    .admin-table { width: 100%; border-collapse: collapse; margin-top: 18px; }
-    .admin-table th, .admin-table td { border-bottom: 1px solid rgba(255,255,255,.12); padding: 10px; vertical-align: top; text-align: left; }
-    .admin-table th { color: var(--gold2); font-size: .9rem; }
-    .record { margin: 18px 0; }
-    .record summary { font-size: 1.1rem; }
-    .mini-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
-    .small { font-size: .9rem; color: var(--muted); }
-    @media (max-width: 700px) { .mini-grid { grid-template-columns: 1fr; } }
+    :root {
+      --bg: #060403;
+      --panel: rgba(255,255,255,.055);
+      --panel-strong: rgba(20,16,13,.96);
+      --gold: #d4af37;
+      --gold2: #f4df95;
+      --cream: #fff4cc;
+      --text: #f8efd4;
+      --muted: #cdbf91;
+      --line: rgba(255,255,255,.13);
+      --green: #193f25;
+      --red: #6d1717;
+      --purple: #3a174d;
+      --shadow: 0 24px 70px rgba(0,0,0,.62);
+      --radius: 20px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      color: var(--text);
+      font-family: Georgia, "Times New Roman", serif;
+      background:
+        radial-gradient(circle at 15% 8%, rgba(212,175,55,.16), transparent 30%),
+        radial-gradient(circle at 88% 12%, rgba(111,66,193,.20), transparent 30%),
+        linear-gradient(180deg, #050302 0%, #100805 48%, #050302 100%);
+      min-height: 100vh;
+    }
+
+    a { color: var(--gold2); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .wrap { width: min(1540px, calc(100% - 28px)); margin: 0 auto; }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      border-bottom: 1px solid var(--line);
+      background: rgba(5,3,2,.88);
+      backdrop-filter: blur(16px);
+    }
+
+    .nav {
+      min-height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      color: var(--cream);
+      font-weight: 800;
+      letter-spacing: .04em;
+    }
+
+    .brand-logo {
+      width: 52px;
+      height: 52px;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      border-radius: 50%;
+      border: 2px solid rgba(212,175,55,.8);
+      box-shadow: 0 0 28px rgba(212,175,55,.27);
+      background: radial-gradient(circle, rgba(244,223,149,.96), rgba(212,175,55,.28) 55%, rgba(58,23,77,.25));
+    }
+
+    .brand-logo img { width: 100%; height: 100%; object-fit: cover; }
+    .brand small { display: block; color: var(--muted); font-size: .72rem; letter-spacing: .12em; text-transform: uppercase; }
+
+    .hero { padding: 48px 0 22px; }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      padding: 8px 13px;
+      border: 1px solid rgba(212,175,55,.35);
+      border-radius: 999px;
+      color: var(--gold2);
+      background: rgba(212,175,55,.08);
+      text-transform: uppercase;
+      letter-spacing: .13em;
+      font-size: .8rem;
+    }
+
+    .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--gold); box-shadow: 0 0 16px var(--gold); }
+
+    h1 { margin: 15px 0 8px; color: var(--cream); font-size: clamp(2.1rem, 5vw, 4.5rem); line-height: 1.04; letter-spacing: -.045em; }
+    h1 span { display: block; color: var(--gold2); font-size: clamp(1.25rem, 2.8vw, 2.45rem); margin-top: 8px; letter-spacing: -.02em; }
+    .subtitle { max-width: 900px; margin: 14px 0 0; color: var(--muted); font-size: 1.05rem; }
+
+    .panel {
+      margin: 28px 0 50px;
+      padding: clamp(18px, 3vw, 30px);
+      border: 1px solid rgba(212,175,55,.30);
+      border-radius: 28px;
+      background:
+        radial-gradient(circle at 10% 0%, rgba(212,175,55,.10), transparent 28%),
+        radial-gradient(circle at 90% 100%, rgba(111,66,193,.14), transparent 28%),
+        rgba(10,7,6,.88);
+      box-shadow: var(--shadow);
+    }
+
+    .access-grid,
+    .toolbar-grid {
+      display: grid;
+      grid-template-columns: minmax(240px, 1.4fr) repeat(2, minmax(160px, .6fr));
+      gap: 14px;
+      align-items: end;
+    }
+
+    .toolbar-grid { grid-template-columns: minmax(220px, 1fr) minmax(180px, .5fr) auto auto; margin-top: 18px; }
+
+    label { display: block; margin: 0 0 7px; color: var(--cream); font-weight: 800; }
+    .hint { display: block; margin-top: 3px; color: var(--muted); font-weight: 400; font-size: .86rem; }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      border: 1px solid rgba(255,255,255,.18);
+      border-radius: 12px;
+      padding: 10px 11px;
+      color: var(--cream);
+      background: rgba(255,255,255,.075);
+      font: inherit;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus { outline: 2px solid rgba(212,175,55,.45); border-color: rgba(212,175,55,.75); }
+    select option { color: var(--cream); background: #140d09; }
+    textarea { min-height: 74px; resize: vertical; }
+
+    .btn,
+    button.btn {
+      min-height: 45px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border: 1px solid rgba(212,175,55,.7);
+      border-radius: 999px;
+      padding: 11px 17px;
+      color: #120b04;
+      background: linear-gradient(135deg, rgba(212,175,55,.96), rgba(244,223,149,.92));
+      font: 800 .96rem Georgia, "Times New Roman", serif;
+      cursor: pointer;
+      box-shadow: 0 12px 30px rgba(0,0,0,.34);
+      white-space: nowrap;
+    }
+
+    .btn:hover { transform: translateY(-1px); text-decoration: none; }
+    .btn.secondary { color: var(--cream); background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.20); }
+    .btn.danger { color: #fff; background: rgba(109,23,23,.72); border-color: rgba(255,150,150,.25); }
+    .btn:disabled { opacity: .45; cursor: not-allowed; transform: none; }
+
+    .notice {
+      margin: 18px 0;
+      padding: 13px 15px;
+      border-left: 4px solid var(--gold);
+      border-radius: 14px;
+      color: var(--muted);
+      background: rgba(212,175,55,.09);
+    }
+
+    .summary-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 14px 0 18px;
+    }
+
+    .summary-pill {
+      padding: 8px 11px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--muted);
+      background: rgba(255,255,255,.045);
+      font-size: .9rem;
+    }
+
+    .summary-pill strong { color: var(--gold2); }
+
+    .sheet-shell {
+      overflow: auto;
+      max-height: 72vh;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: rgba(0,0,0,.23);
+    }
+
+    table {
+      width: 100%;
+      min-width: 2050px;
+      border-collapse: separate;
+      border-spacing: 0;
+      font-size: .88rem;
+    }
+
+    th,
+    td {
+      padding: 9px;
+      border-right: 1px solid rgba(255,255,255,.08);
+      border-bottom: 1px solid rgba(255,255,255,.10);
+      vertical-align: top;
+      text-align: left;
+    }
+
+    th {
+      position: sticky;
+      top: 0;
+      z-index: 8;
+      color: #170e05;
+      background: linear-gradient(180deg, var(--gold2), var(--gold));
+      white-space: nowrap;
+      font-size: .82rem;
+      letter-spacing: .02em;
+    }
+
+    th:first-child,
+    td:first-child {
+      position: sticky;
+      left: 0;
+      z-index: 7;
+      min-width: 132px;
+    }
+
+    th:first-child { z-index: 10; }
+    td:first-child { background: #150d08; }
+
+    tbody tr:nth-child(even) td { background-color: rgba(255,255,255,.022); }
+    tbody tr:nth-child(even) td:first-child { background: #1a100a; }
+    tbody tr:hover td { background-color: rgba(212,175,55,.045); }
+
+    .cell-name { min-width: 190px; }
+    .cell-contact { min-width: 210px; }
+    .cell-concern { min-width: 210px; }
+    .cell-spiritual { min-width: 190px; }
+    .cell-edit { min-width: 160px; }
+    .cell-long { min-width: 245px; }
+    .cell-actions { min-width: 132px; }
+
+    .sheet-input,
+    .sheet-select,
+    .sheet-textarea {
+      min-width: 145px;
+      padding: 8px;
+      border-radius: 9px;
+      font-size: .86rem;
+    }
+
+    .sheet-textarea { min-height: 62px; }
+
+    .status-badge {
+      display: inline-block;
+      margin-top: 6px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      color: var(--cream);
+      background: rgba(58,23,77,.75);
+      font-size: .75rem;
+      word-break: break-word;
+    }
+
+    .muted { color: var(--muted); }
+    .tiny { font-size: .78rem; }
+    .nowrap { white-space: nowrap; }
+    .preline { white-space: pre-wrap; }
+
+    .row-actions { display: grid; gap: 8px; }
+    .row-actions .btn { width: 100%; min-height: 38px; padding: 8px 10px; font-size: .82rem; }
+
+    .detail-row { display: none; }
+    .detail-row.open { display: table-row; }
+    .detail-row td {
+      position: static !important;
+      background: rgba(58,23,77,.18) !important;
+      padding: 18px;
+    }
+
+    .detail-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0,1fr));
+      gap: 12px;
+    }
+
+    .detail-card {
+      padding: 13px;
+      border: 1px solid var(--line);
+      border-radius: 13px;
+      background: rgba(255,255,255,.04);
+    }
+
+    .detail-card.wide { grid-column: span 2; }
+    .detail-card.full { grid-column: 1 / -1; }
+    .detail-card strong { color: var(--gold2); }
+
+    .events-box { margin-top: 14px; }
+    .event-item { margin: 9px 0; padding: 11px; border-left: 3px solid var(--gold); background: rgba(212,175,55,.06); }
+
+    .empty {
+      padding: 32px;
+      text-align: center;
+      color: var(--muted);
+      border: 1px dashed rgba(255,255,255,.16);
+      border-radius: 15px;
+    }
+
+    footer { padding: 24px 0 36px; color: var(--muted); border-top: 1px solid var(--line); background: rgba(0,0,0,.22); }
+    .footer-grid { display: flex; align-items: center; justify-content: space-between; gap: 18px; flex-wrap: wrap; }
+
+    @media (max-width: 960px) {
+      .access-grid,
+      .toolbar-grid { grid-template-columns: 1fr 1fr; }
+      .detail-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
+      .btn { width: 100%; }
+    }
+
+    @media (max-width: 620px) {
+      .access-grid,
+      .toolbar-grid,
+      .detail-grid { grid-template-columns: 1fr; }
+      .detail-card.wide,
+      .detail-card.full { grid-column: auto; }
+      .nav { align-items: flex-start; padding: 12px 0; }
+      h1 { font-size: 2.2rem; }
+    }
   </style>
 </head>
 
 <body>
-<header class="topbar">
-  <div class="wrap nav">
-    <a class="brand" href="index.html" aria-label="Your Babalawo home">
-      <span class="brand-logo">
-        <img src="SwamiG.gif" alt="SwamiG Institute logo" onerror="this.style.display='none'; this.parentElement.innerHTML='<span class=&quot;brand-mark&quot;>SGI</span>';" />
-      </span>
-      <span>
-        Your Babalawo
-        <small>Private Admin</small>
-      </span>
-    </a>
-    <a class="btn secondary" href="index.html">Return Home</a>
-  </div>
-</header>
-
-<main>
-  <section class="hero">
-    <div class="wrap">
-      <div class="eyebrow"><span class="dot"></span> Private Database</div>
-      <h1>Client Intake Admin <span>Koleoso Interaction Records</span></h1>
-      <p class="subtitle">
-        Review client intake submissions, record reading results, update status,
-        and maintain the interaction history in Cloudflare D1.
-      </p>
+  <header class="topbar">
+    <div class="wrap nav">
+      <a class="brand" href="index.html" aria-label="Your Babalawo home">
+        <span class="brand-logo">
+          <img src="SwamiG.gif" alt="SwamiG Institute logo" onerror="this.style.display='none'; this.parentElement.textContent='SGI';" />
+        </span>
+        <span>
+          Your Babalawo
+          <small>Private Intake Spreadsheet</small>
+        </span>
+      </a>
+      <a class="btn secondary" href="index.html">Return Home</a>
     </div>
-  </section>
+  </header>
 
-  <section>
-    <div class="wrap form-wrap">
-      <fieldset>
-        <legend>Admin Access</legend>
-        <label for="token">Admin Token
-          <span class="hint">This must match the Cloudflare Pages environment variable named ADMIN_TOKEN.</span>
-        </label>
-        <input id="token" type="password" placeholder="Enter private admin token" />
-        <div class="actions">
-          <button class="btn" id="loadBtn" type="button">Load Submissions</button>
-          <button class="btn secondary" id="clearTokenBtn" type="button">Clear Token</button>
+  <main>
+    <section class="hero">
+      <div class="wrap">
+        <div class="eyebrow"><span class="dot"></span> Private Cloudflare D1 Records</div>
+        <h1>Client Intake Spreadsheet <span>Koleoso Information & Divination Records</span></h1>
+        <p class="subtitle">
+          Each intake submission appears as one searchable row. Review client information, update divination results,
+          open full questions and background, and export the loaded records as a CSV spreadsheet.
+        </p>
+      </div>
+    </section>
+
+    <section class="wrap panel" aria-label="Private intake spreadsheet controls">
+      <div class="access-grid">
+        <div>
+          <label for="token">Admin Token
+            <span class="hint">Must match the Cloudflare Pages secret named ADMIN_TOKEN.</span>
+          </label>
+          <input id="token" type="password" autocomplete="current-password" placeholder="Enter private admin token" />
         </div>
-      </fieldset>
-
-      <div id="message" class="notice"><p>Enter your admin token to view the database.</p></div>
-      <div id="records"></div>
-    </div>
-  </section>
-</main>
-
-<footer>
-  <div class="wrap">
-    <div class="footer-grid">
-      <div><strong>YourBabalawo.com</strong><br />Koleoso Admin Database</div>
-      <div><a href="mailto:baba@swamiginstitute.com">baba@swamiginstitute.com</a> | <a href="tel:+18507926442">850-SWAMIG2</a></div>
-    </div>
-    <div class="fineprint">© <span id="year"></span> SwamiG Institute. Private administrative access only.</div>
-  </div>
-</footer>
-
-<script>
-document.getElementById("year").textContent = new Date().getFullYear();
-
-const tokenInput = document.getElementById("token");
-const recordsEl = document.getElementById("records");
-const messageEl = document.getElementById("message");
-
-try {
-  tokenInput.value = localStorage.getItem("yb_admin_token") || "";
-} catch (e) {}
-
-function esc(value) {
-  return (value || "").toString()
-    .replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;").replaceAll("'", "&#039;");
-}
-
-function showMessage(text) {
-  messageEl.innerHTML = "<p>" + esc(text) + "</p>";
-}
-
-async function api(path, options = {}) {
-  const token = tokenInput.value.trim();
-  if (!token) throw new Error("Admin token required.");
-
-  try { localStorage.setItem("yb_admin_token", token); } catch (e) {}
-
-  const response = await fetch(path, {
-    ...options,
-    headers: {
-      "content-type": "application/json",
-      "x-admin-token": token,
-      ...(options.headers || {})
-    }
-  });
-
-  const result = await response.json();
-  if (!response.ok || !result.ok) {
-    throw new Error(result.error || "Request failed.");
-  }
-  return result;
-}
-
-function recordHtml(r) {
-  const title = `${esc(r.full_name)} — ${esc(r.status)} — ${esc(r.created_at)}`;
-  return `
-    <details class="card record">
-      <summary>${title}</summary>
-
-      <div class="mini-grid" style="margin-top:16px;">
-        <div><strong>Email:</strong><br><a href="mailto:${esc(r.email)}">${esc(r.email)}</a></div>
-        <div><strong>Phone:</strong><br><a href="tel:${esc(r.phone)}">${esc(r.phone)}</a></div>
-        <div><strong>Location:</strong><br>${esc(r.location)}</div>
-        <div><strong>Contact:</strong><br>${esc(r.preferred_contact_method)}</div>
+        <button class="btn" id="loadBtn" type="button">Load Intake Spreadsheet</button>
+        <button class="btn danger" id="clearTokenBtn" type="button">Clear Token</button>
       </div>
 
-      <hr style="border-color:rgba(255,255,255,.12); margin:18px 0;">
+      <div id="message" class="notice" role="status" aria-live="polite">Enter your admin token to load the private intake records.</div>
 
-      <p><strong>Concern:</strong> ${esc(r.primary_concern_category)}</p>
-      <p><strong>Primary Reason:</strong><br>${esc(r.primary_reason)}</p>
-      <p><strong>Why Now:</strong><br>${esc(r.why_now)}</p>
-      <p><strong>Question 1:</strong><br>${esc(r.question_1)}</p>
-      <p><strong>Question 2:</strong><br>${esc(r.question_2)}</p>
-      <p><strong>Question 3:</strong><br>${esc(r.question_3)}</p>
-
-      <fieldset>
-        <legend>Reading / Interaction Update</legend>
-        <input type="hidden" class="record-id" value="${esc(r.id)}">
-
-        <label>Status</label>
-        <select class="status-field">
-          ${["new_intake","awaiting_payment","paid_awaiting_schedule","scheduled","reading_completed","ebo_pending","follow_up_needed","closed"].map(s => `<option ${r.status === s ? "selected" : ""}>${s}</option>`).join("")}
-        </select>
-
-        <div class="mini-grid">
-          <div><label>Odu</label><input class="odu-field" value="${esc(r.odu)}"></div>
-          <div><label>Orisha</label><input class="orisha-field" value="${esc(r.orisha)}"></div>
-          <div><label>Tehuti / Neter</label><input class="tehuti-field" value="${esc(r.tehuti_neter)}"></div>
-          <div><label>Ire / Ibi</label><input class="ire-field" value="${esc(r.ire_ibi)}"></div>
+      <div class="toolbar-grid">
+        <div>
+          <label for="searchBox">Search Loaded Records</label>
+          <input id="searchBox" type="search" placeholder="Name, email, phone, concern, Odu, Orisha..." disabled />
         </div>
-
-        <label>Ebo Summary</label>
-        <textarea class="ebo-field">${esc(r.ebo_summary)}</textarea>
-
-        <label>Follow-Up Needed</label>
-        <input class="follow-field" value="${esc(r.follow_up_needed)}">
-
-        <label>Private Notes</label>
-        <textarea class="notes-field">${esc(r.notes)}</textarea>
-
-        <div class="actions">
-          <button class="btn save-btn" type="button">Save Update</button>
-          <button class="btn secondary events-btn" type="button">Show Interaction Log</button>
+        <div>
+          <label for="statusFilter">Status</label>
+          <select id="statusFilter" disabled>
+            <option value="">All statuses</option>
+            <option value="new_intake">new_intake</option>
+            <option value="awaiting_payment">awaiting_payment</option>
+            <option value="paid_awaiting_schedule">paid_awaiting_schedule</option>
+            <option value="scheduled">scheduled</option>
+            <option value="reading_completed">reading_completed</option>
+            <option value="ebo_pending">ebo_pending</option>
+            <option value="follow_up_needed">follow_up_needed</option>
+            <option value="closed">closed</option>
+          </select>
         </div>
+        <button class="btn secondary" id="exportBtn" type="button" disabled>Export CSV</button>
+        <button class="btn secondary" id="copyBtn" type="button" disabled>Copy Spreadsheet</button>
+      </div>
 
-        <div class="events-box small"></div>
-      </fieldset>
-    </details>
-  `;
-}
+      <div id="summaryBar" class="summary-bar" hidden></div>
+      <div id="records"><div class="empty">No records loaded.</div></div>
+    </section>
+  </main>
 
-async function loadRecords() {
-  showMessage("Loading submissions...");
-  recordsEl.innerHTML = "";
-  const result = await api("/api/admin/intakes?limit=100");
-  const submissions = result.submissions || [];
-  if (!submissions.length) {
-    showMessage("No intake submissions found yet.");
-    return;
-  }
-  showMessage("Loaded " + submissions.length + " intake submission(s).");
-  recordsEl.innerHTML = submissions.map(recordHtml).join("");
-}
+  <footer>
+    <div class="wrap footer-grid">
+      <div><strong>YourBabalawo.com</strong><br />Koleoso Private Client Database</div>
+      <div><a href="mailto:baba@swamiginstitute.com">baba@swamiginstitute.com</a> | <a href="tel:+18507926442">850-SWAMIG2</a></div>
+      <div>© <span id="year"></span> SwamiG Institute</div>
+    </div>
+  </footer>
 
-async function saveRecord(detail) {
-  const box = detail.closest("details");
-  const payload = {
-    id: box.querySelector(".record-id").value,
-    status: box.querySelector(".status-field").value,
-    odu: box.querySelector(".odu-field").value,
-    orisha: box.querySelector(".orisha-field").value,
-    tehutiNeter: box.querySelector(".tehuti-field").value,
-    ireIbi: box.querySelector(".ire-field").value,
-    eboSummary: box.querySelector(".ebo-field").value,
-    followUpNeeded: box.querySelector(".follow-field").value,
-    notes: box.querySelector(".notes-field").value
-  };
-  await api("/api/admin/intakes", {
-    method: "PATCH",
-    body: JSON.stringify(payload)
-  });
-  showMessage("Record updated.");
-}
+  <script>
+    "use strict";
 
-async function loadEvents(detail) {
-  const box = detail.closest("details");
-  const id = box.querySelector(".record-id").value;
-  const result = await api("/api/admin/events?intakeId=" + encodeURIComponent(id));
-  const eventsBox = box.querySelector(".events-box");
-  const events = result.events || [];
-  eventsBox.innerHTML = "<h3>Interaction Log</h3>" + (events.length ? events.map(e =>
-    `<p><strong>${esc(e.created_at)} — ${esc(e.event_type)}</strong><br>${esc(e.summary)}<br><span>${esc(e.metadata_json)}</span></p>`
-  ).join("") : "<p>No events found.</p>");
-}
+    document.getElementById("year").textContent = new Date().getFullYear();
 
-document.getElementById("loadBtn").addEventListener("click", () => loadRecords().catch(err => showMessage(err.message)));
-document.getElementById("clearTokenBtn").addEventListener("click", () => {
-  tokenInput.value = "";
-  try { localStorage.removeItem("yb_admin_token"); } catch (e) {}
-  showMessage("Token cleared.");
-});
-recordsEl.addEventListener("click", (event) => {
-  if (event.target.classList.contains("save-btn")) {
-    saveRecord(event.target).catch(err => showMessage(err.message));
-  }
-  if (event.target.classList.contains("events-btn")) {
-    loadEvents(event.target).catch(err => showMessage(err.message));
-  }
-});
-</script>
+    const tokenInput = document.getElementById("token");
+    const recordsEl = document.getElementById("records");
+    const messageEl = document.getElementById("message");
+    const searchBox = document.getElementById("searchBox");
+    const statusFilter = document.getElementById("statusFilter");
+    const exportBtn = document.getElementById("exportBtn");
+    const copyBtn = document.getElementById("copyBtn");
+    const summaryBar = document.getElementById("summaryBar");
+
+    let allRecords = [];
+
+    try {
+      tokenInput.value = localStorage.getItem("yb_admin_token") || "";
+    } catch (error) {
+      console.warn("Token storage unavailable.", error);
+    }
+
+    function text(value) {
+      return value == null ? "" : String(value);
+    }
+
+    function esc(value) {
+      return text(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function showMessage(message) {
+      messageEl.textContent = message;
+    }
+
+    function formatDate(value) {
+      if (!value) return "";
+      const date = new Date(value);
+      return Number.isNaN(date.getTime()) ? value : date.toLocaleString();
+    }
+
+    async function api(path, options = {}) {
+      const token = tokenInput.value.trim();
+      if (!token) throw new Error("Admin token required.");
+
+      try { localStorage.setItem("yb_admin_token", token); } catch (error) {}
+
+      const response = await fetch(path, {
+        ...options,
+        headers: {
+          "content-type": "application/json",
+          "x-admin-token": token,
+          ...(options.headers || {})
+        }
+      });
+
+      let result;
+      try {
+        result = await response.json();
+      } catch (error) {
+        throw new Error("The admin API did not return valid JSON.");
+      }
+
+      if (!response.ok || !result.ok) {
+        throw new Error(result.error || "Request failed.");
+      }
+      return result;
+    }
+
+    const statuses = [
+      "new_intake",
+      "awaiting_payment",
+      "paid_awaiting_schedule",
+      "scheduled",
+      "reading_completed",
+      "ebo_pending",
+      "follow_up_needed",
+      "closed"
+    ];
+
+    function statusOptions(current) {
+      return statuses.map(status =>
+        `<option value="${esc(status)}" ${status === current ? "selected" : ""}>${esc(status)}</option>`
+      ).join("");
+    }
+
+    function searchText(record) {
+      return Object.values(record || {}).map(text).join(" ").toLowerCase();
+    }
+
+    function detailHtml(record) {
+      const yesNo = value => Number(value) === 1 || value === true ? "Yes" : "No";
+      return `
+        <div class="detail-grid">
+          <div class="detail-card"><strong>Client ID</strong><br><span class="tiny muted">${esc(record.id)}</span></div>
+          <div class="detail-card"><strong>Created</strong><br>${esc(formatDate(record.created_at))}</div>
+          <div class="detail-card"><strong>Updated</strong><br>${esc(formatDate(record.updated_at))}</div>
+          <div class="detail-card"><strong>Preferred Contact</strong><br>${esc(record.preferred_contact_method)}</div>
+
+          <div class="detail-card"><strong>Ifá Divination Before?</strong><br>${esc(record.received_ifa_before)}</div>
+          <div class="detail-card"><strong>Tehuti Divination Before?</strong><br>${esc(record.received_tehuti_before)}</div>
+          <div class="detail-card wide"><strong>Godparent / Elder / Spiritual House</strong><br><span class="preline">${esc(record.godparent_elder_spiritual_house)}</span></div>
+
+          <div class="detail-card full"><strong>Primary Reason</strong><br><span class="preline">${esc(record.primary_reason)}</span></div>
+          <div class="detail-card full"><strong>Why Now?</strong><br><span class="preline">${esc(record.why_now)}</span></div>
+          <div class="detail-card full"><strong>Question 1</strong><br><span class="preline">${esc(record.question_1)}</span></div>
+          <div class="detail-card full"><strong>Question 2</strong><br><span class="preline">${esc(record.question_2)}</span></div>
+          <div class="detail-card full"><strong>Question 3</strong><br><span class="preline">${esc(record.question_3)}</span></div>
+
+          <div class="detail-card"><strong>Spiritual Consultation Consent</strong><br>${yesNo(record.consent_spiritual_consultation)}</div>
+          <div class="detail-card"><strong>Not Medical/Legal/Financial Consent</strong><br>${yesNo(record.consent_not_medical_legal_financial)}</div>
+          <div class="detail-card"><strong>Ebo/Correction Consent</strong><br>${yesNo(record.consent_ebo_correction)}</div>
+          <div class="detail-card"><strong>Payment Required Consent</strong><br>${yesNo(record.consent_payment_required)}</div>
+
+          <div class="detail-card full events-box" data-events-for="${esc(record.id)}">
+            <strong>Interaction Log</strong><br><span class="muted">Select “Interaction Log” to load recorded events.</span>
+          </div>
+        </div>`;
+    }
+
+    function rowHtml(record, index) {
+      const phoneHref = text(record.phone).replace(/[^+0-9]/g, "");
+      return `
+        <tr class="data-row" data-id="${esc(record.id)}" data-status="${esc(record.status)}" data-search="${esc(searchText(record))}">
+          <td class="nowrap">
+            <strong>${index + 1}</strong><br>
+            <span class="tiny muted">${esc(formatDate(record.created_at))}</span>
+            <input type="hidden" class="record-id" value="${esc(record.id)}">
+          </td>
+          <td class="cell-edit">
+            <select class="sheet-select status-field" aria-label="Status for ${esc(record.full_name)}">${statusOptions(record.status)}</select>
+            <span class="status-badge">${esc(record.status)}</span>
+          </td>
+          <td class="cell-name">
+            <strong>${esc(record.full_name)}</strong><br>
+            <span class="tiny muted">${esc(record.location)}</span>
+          </td>
+          <td class="cell-contact">
+            <a href="mailto:${esc(record.email)}">${esc(record.email)}</a><br>
+            <a href="tel:${esc(phoneHref)}">${esc(record.phone)}</a><br>
+            <span class="tiny muted">${esc(record.preferred_contact_method)}</span>
+          </td>
+          <td class="cell-concern">
+            <strong>${esc(record.primary_concern_category)}</strong><br>
+            <span class="tiny muted preline">${esc(record.primary_reason)}</span>
+          </td>
+          <td class="cell-spiritual">
+            ${esc(record.spiritual_or_initiation_status)}<br>
+            <span class="tiny muted">Ifá: ${esc(record.received_ifa_before)} | Tehuti: ${esc(record.received_tehuti_before)}</span>
+          </td>
+          <td class="cell-edit"><input class="sheet-input odu-field" value="${esc(record.odu)}" aria-label="Odu for ${esc(record.full_name)}"></td>
+          <td class="cell-edit"><input class="sheet-input orisha-field" value="${esc(record.orisha)}" aria-label="Orisha for ${esc(record.full_name)}"></td>
+          <td class="cell-edit"><input class="sheet-input tehuti-field" value="${esc(record.tehuti_neter)}" aria-label="Tehuti or Neter for ${esc(record.full_name)}"></td>
+          <td class="cell-edit"><input class="sheet-input ire-field" value="${esc(record.ire_ibi)}" aria-label="Ire or Ibi for ${esc(record.full_name)}"></td>
+          <td class="cell-long"><textarea class="sheet-textarea ebo-field" aria-label="Ebo summary for ${esc(record.full_name)}">${esc(record.ebo_summary)}</textarea></td>
+          <td class="cell-edit"><input class="sheet-input follow-field" value="${esc(record.follow_up_needed)}" aria-label="Follow-up for ${esc(record.full_name)}"></td>
+          <td class="cell-long"><textarea class="sheet-textarea notes-field" aria-label="Private notes for ${esc(record.full_name)}">${esc(record.notes)}</textarea></td>
+          <td class="cell-actions">
+            <div class="row-actions">
+              <button class="btn save-btn" type="button">Save Row</button>
+              <button class="btn secondary detail-btn" type="button">Full Intake</button>
+              <button class="btn secondary events-btn" type="button">Interaction Log</button>
+            </div>
+          </td>
+        </tr>
+        <tr class="detail-row" data-detail-id="${esc(record.id)}">
+          <td colspan="14">${detailHtml(record)}</td>
+        </tr>`;
+    }
+
+    function renderRecords(records) {
+      if (!records.length) {
+        recordsEl.innerHTML = '<div class="empty">No intake submissions matched your search.</div>';
+        return;
+      }
+
+      recordsEl.innerHTML = `
+        <div class="sheet-shell" aria-label="Client intake spreadsheet">
+          <table>
+            <thead>
+              <tr>
+                <th># / Submitted</th>
+                <th>Status</th>
+                <th>Client</th>
+                <th>Contact</th>
+                <th>Concern</th>
+                <th>Spiritual Background</th>
+                <th>Odu</th>
+                <th>Orisha</th>
+                <th>Tehuti / Neter</th>
+                <th>Ire / Ibi</th>
+                <th>Ebo Summary</th>
+                <th>Follow-Up</th>
+                <th>Private Notes</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>${records.map(rowHtml).join("")}</tbody>
+          </table>
+        </div>`;
+    }
+
+    function filteredRecords() {
+      const query = searchBox.value.trim().toLowerCase();
+      const status = statusFilter.value;
+      return allRecords.filter(record => {
+        const matchesQuery = !query || searchText(record).includes(query);
+        const matchesStatus = !status || record.status === status;
+        return matchesQuery && matchesStatus;
+      });
+    }
+
+    function updateSummary(records) {
+      const statusCounts = records.reduce((counts, record) => {
+        counts[record.status] = (counts[record.status] || 0) + 1;
+        return counts;
+      }, {});
+
+      summaryBar.hidden = false;
+      summaryBar.innerHTML = [
+        `<span class="summary-pill"><strong>${records.length}</strong> visible</span>`,
+        `<span class="summary-pill"><strong>${allRecords.length}</strong> loaded</span>`,
+        ...Object.entries(statusCounts).map(([status, count]) =>
+          `<span class="summary-pill"><strong>${count}</strong> ${esc(status)}</span>`
+        )
+      ].join("");
+    }
+
+    function applyFilters() {
+      const records = filteredRecords();
+      renderRecords(records);
+      updateSummary(records);
+      showMessage(`Showing ${records.length} of ${allRecords.length} loaded intake submission(s).`);
+    }
+
+    async function loadRecords() {
+      showMessage("Loading intake submissions from Cloudflare D1...");
+      recordsEl.innerHTML = '<div class="empty">Loading records...</div>';
+
+      const result = await api("/api/admin/intakes?limit=500");
+      allRecords = Array.isArray(result.submissions) ? result.submissions : [];
+
+      searchBox.disabled = false;
+      statusFilter.disabled = false;
+      exportBtn.disabled = !allRecords.length;
+      copyBtn.disabled = !allRecords.length;
+
+      if (!allRecords.length) {
+        summaryBar.hidden = true;
+        recordsEl.innerHTML = '<div class="empty">No intake submissions found yet.</div>';
+        showMessage("No intake submissions found yet.");
+        return;
+      }
+
+      applyFilters();
+    }
+
+    function findRow(button) {
+      const row = button.closest("tr.data-row");
+      if (!row) throw new Error("Could not locate the intake row.");
+      return row;
+    }
+
+    async function saveRow(button) {
+      const row = findRow(button);
+      const id = row.querySelector(".record-id").value;
+      const payload = {
+        id,
+        status: row.querySelector(".status-field").value,
+        odu: row.querySelector(".odu-field").value,
+        orisha: row.querySelector(".orisha-field").value,
+        tehutiNeter: row.querySelector(".tehuti-field").value,
+        ireIbi: row.querySelector(".ire-field").value,
+        eboSummary: row.querySelector(".ebo-field").value,
+        followUpNeeded: row.querySelector(".follow-field").value,
+        notes: row.querySelector(".notes-field").value
+      };
+
+      button.disabled = true;
+      button.textContent = "Saving...";
+      try {
+        await api("/api/admin/intakes", {
+          method: "PATCH",
+          body: JSON.stringify(payload)
+        });
+
+        const record = allRecords.find(item => item.id === id);
+        if (record) {
+          record.status = payload.status;
+          record.odu = payload.odu;
+          record.orisha = payload.orisha;
+          record.tehuti_neter = payload.tehutiNeter;
+          record.ire_ibi = payload.ireIbi;
+          record.ebo_summary = payload.eboSummary;
+          record.follow_up_needed = payload.followUpNeeded;
+          record.notes = payload.notes;
+        }
+
+        showMessage(`Saved the row for ${record ? record.full_name : "the client"}.`);
+        applyFilters();
+      } finally {
+        button.disabled = false;
+        button.textContent = "Save Row";
+      }
+    }
+
+    function toggleDetails(button) {
+      const row = findRow(button);
+      const id = row.dataset.id;
+      const detailRow = recordsEl.querySelector(`[data-detail-id="${CSS.escape(id)}"]`);
+      if (!detailRow) return;
+      detailRow.classList.toggle("open");
+      button.textContent = detailRow.classList.contains("open") ? "Close Intake" : "Full Intake";
+    }
+
+    async function loadEvents(button) {
+      const row = findRow(button);
+      const id = row.dataset.id;
+      const detailRow = recordsEl.querySelector(`[data-detail-id="${CSS.escape(id)}"]`);
+      if (!detailRow) return;
+
+      detailRow.classList.add("open");
+      const detailButton = row.querySelector(".detail-btn");
+      if (detailButton) detailButton.textContent = "Close Intake";
+
+      const eventsBox = detailRow.querySelector(`[data-events-for="${CSS.escape(id)}"]`);
+      eventsBox.innerHTML = "<strong>Interaction Log</strong><br><span class='muted'>Loading...</span>";
+
+      const result = await api("/api/admin/events?intakeId=" + encodeURIComponent(id));
+      const events = Array.isArray(result.events) ? result.events : [];
+
+      eventsBox.innerHTML = "<strong>Interaction Log</strong>" + (events.length
+        ? events.map(event => `
+            <div class="event-item">
+              <strong>${esc(formatDate(event.created_at))} — ${esc(event.event_type)}</strong><br>
+              <span class="preline">${esc(event.summary)}</span>
+              ${event.metadata_json ? `<br><span class="tiny muted preline">${esc(event.metadata_json)}</span>` : ""}
+            </div>`).join("")
+        : "<br><span class='muted'>No interaction events found.</span>");
+    }
+
+    const csvFields = [
+      ["id", "ID"],
+      ["created_at", "Created At"],
+      ["updated_at", "Updated At"],
+      ["status", "Status"],
+      ["full_name", "Full Name"],
+      ["email", "Email"],
+      ["phone", "Phone"],
+      ["location", "Location"],
+      ["preferred_contact_method", "Preferred Contact Method"],
+      ["received_ifa_before", "Received Ifa Before"],
+      ["received_tehuti_before", "Received Tehuti Before"],
+      ["spiritual_or_initiation_status", "Spiritual or Initiation Status"],
+      ["godparent_elder_spiritual_house", "Godparent Elder Spiritual House"],
+      ["primary_concern_category", "Primary Concern Category"],
+      ["primary_reason", "Primary Reason"],
+      ["why_now", "Why Now"],
+      ["question_1", "Question 1"],
+      ["question_2", "Question 2"],
+      ["question_3", "Question 3"],
+      ["consent_spiritual_consultation", "Consent Spiritual Consultation"],
+      ["consent_not_medical_legal_financial", "Consent Not Medical Legal Financial"],
+      ["consent_ebo_correction", "Consent Ebo Correction"],
+      ["consent_payment_required", "Consent Payment Required"],
+      ["odu", "Odu"],
+      ["orisha", "Orisha"],
+      ["tehuti_neter", "Tehuti Neter"],
+      ["ire_ibi", "Ire Ibi"],
+      ["ebo_summary", "Ebo Summary"],
+      ["follow_up_needed", "Follow Up Needed"],
+      ["notes", "Private Notes"]
+    ];
+
+    function csvCell(value) {
+      return `"${text(value).replaceAll('"', '""')}"`;
+    }
+
+    function buildCsv(records) {
+      const header = csvFields.map(([, label]) => csvCell(label)).join(",");
+      const rows = records.map(record => csvFields.map(([key]) => csvCell(record[key])).join(","));
+      return [header, ...rows].join("\r\n");
+    }
+
+    function exportCsv() {
+      const records = filteredRecords();
+      if (!records.length) {
+        showMessage("There are no visible records to export.");
+        return;
+      }
+
+      const blob = new Blob(["\uFEFF" + buildCsv(records)], { type: "text/csv;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      const date = new Date().toISOString().slice(0, 10);
+      link.href = url;
+      link.download = `yourbabalawo-intakes-${date}.csv`;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
+      showMessage(`Exported ${records.length} visible intake record(s) as CSV.`);
+    }
+
+    async function copySpreadsheet() {
+      const records = filteredRecords();
+      if (!records.length) {
+        showMessage("There are no visible records to copy.");
+        return;
+      }
+
+      const header = csvFields.map(([, label]) => label).join("\t");
+      const rows = records.map(record => csvFields.map(([key]) => text(record[key]).replaceAll("\t", " ").replaceAll("\n", " ")).join("\t"));
+      const tsv = [header, ...rows].join("\n");
+
+      try {
+        await navigator.clipboard.writeText(tsv);
+        showMessage(`Copied ${records.length} visible record(s). Paste directly into Excel or Google Sheets.`);
+      } catch (error) {
+        throw new Error("Clipboard access was blocked. Use Export CSV instead.");
+      }
+    }
+
+    document.getElementById("loadBtn").addEventListener("click", () => {
+      loadRecords().catch(error => showMessage(error.message));
+    });
+
+    document.getElementById("clearTokenBtn").addEventListener("click", () => {
+      tokenInput.value = "";
+      allRecords = [];
+      searchBox.value = "";
+      statusFilter.value = "";
+      searchBox.disabled = true;
+      statusFilter.disabled = true;
+      exportBtn.disabled = true;
+      copyBtn.disabled = true;
+      summaryBar.hidden = true;
+      recordsEl.innerHTML = '<div class="empty">No records loaded.</div>';
+      try { localStorage.removeItem("yb_admin_token"); } catch (error) {}
+      showMessage("Admin token cleared from this browser.");
+    });
+
+    searchBox.addEventListener("input", applyFilters);
+    statusFilter.addEventListener("change", applyFilters);
+    exportBtn.addEventListener("click", exportCsv);
+    copyBtn.addEventListener("click", () => copySpreadsheet().catch(error => showMessage(error.message)));
+
+    recordsEl.addEventListener("click", event => {
+      const target = event.target;
+      if (!(target instanceof HTMLElement)) return;
+
+      if (target.classList.contains("save-btn")) {
+        saveRow(target).catch(error => showMessage(error.message));
+      } else if (target.classList.contains("detail-btn")) {
+        toggleDetails(target);
+      } else if (target.classList.contains("events-btn")) {
+        loadEvents(target).catch(error => showMessage(error.message));
+      }
+    });
+
+    recordsEl.addEventListener("change", event => {
+      const target = event.target;
+      if (!(target instanceof HTMLElement) || !target.classList.contains("status-field")) return;
+      const row = target.closest("tr.data-row");
+      const badge = row && row.querySelector(".status-badge");
+      if (badge) badge.textContent = target.value;
+    });
+  </script>
 </body>
 </html>
